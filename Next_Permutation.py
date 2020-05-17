@@ -1,3 +1,6 @@
+# 从右向左寻找最早开始ascending的数，然后和它右边的数里面比它大的最小数交换，
+# 再将这个位置向右的descending数列全部reverse，时间复杂度O(n).
+
 class Solution:
     def nextPermutation(self, nums: List[int]) -> None:
         """

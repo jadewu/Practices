@@ -68,3 +68,50 @@ class Solution:
         dfs(0)
         print(self.good, self.total)
         return self.good/self.total
+
+# 剪枝recursion，用组合数求解
+class Solution:
+    def getProbability(self, balls: List[int]) -> float:
+        # 组合公式，比如c(5,3) = (5*4*3)/(3*2*1)
+        def c(a,b):
+            c = 1
+            for i in range(int(b)):
+                c *= (a-i)/(b-i)
+            return c
+        # an, bm分别是两个盒子里现有的球的个数，ak, bk分别是两个盒子里球的颜色种类数
+        # rem是还没有放进盒子里的球的个数的数列(开始是balls)
+        def rec(an, ak, bn, bk, rem): 
+            total = (an + bn + sum(rem)) // 2 # 每个盒子里球的个数均分
+            # 如果两个盒子里球的个数不相等
+            if an > total or bn > total:
+                return 0
+            # 如果两个盒子里球的颜色的种类差大于剩下的球的颜色种类数
+            # 比如：balls = [1,1,2], 所有球[A, B, C, C]现在两个盒子都是空的，差=0
+            # 现在两个盒子里分别是[A], [] 差值=1 < len(rem)==2  继续
+            # 现在两个盒子里分别是[A,B], [] 差值=2 > len(rem)==1    不满足条件，因为剩下的球无法得到最后满足条件的结果
+            # 现在两个盒子里分别是[A], [B] 差值=0 < len(rem)==1 继续
+            # 现在两个盒子里分别是[A,C,C], [B] 差值=1 > len(rem)==0 不满足条件
+            # 现在两个盒子里分别是[A,C], [B,C] 差值=0 == len(rem)==0 满足条件
+            # 所以当剩下的球的种类数还可以弥补两个盒子里现有种类数的差值的时候，可以继续recursion
+            if abs(ak-bk) > len(rem):
+                return 0
+            # 因为每次recursion都会排除不可能得到满足条件的结果的放置方法，所以如果rem==0，得到的一定是满足条件的方法
+            if not rem:
+                return 1
+            # 取出剩下的球里的第一种颜色的球，把它们放进两个盒子里
+            cur, res = rem[0], 0
+            # 比如rem[0] = 3, 颜色D，放法有：c(3,0), c(3,1), c(3,2), c(3,3)
+            # 如果第一个盒子加上D的个数是c(3,0)，得到的就是an, ak, bn+3, bk+1, rem
+            # 如果第一个盒子加上D的个数是c(3,1)，得到的就是an+1, ak+1, bn+2, bk+1, rem
+            # 以此类推，满足条件的结果个数会加上这次分配D的种类*之后rec的结果
+            for i in range(1,cur):
+                res += c(cur,i) * rec(an+i, ak+1, bn+cur-i, bk+1, rem[1:])
+            res += rec(an+cur, ak+1, bn, bk, rem[1:])
+            res += rec(an, ak, bn+cur, bk+1, rem[1:])
+            return res
+        
+        # 分母是两个盒子均分所有球的所有可能的情况
+        below = c(sum(balls), sum(balls)/2)
+        # 分子是通过上面recursion得到的满足均分、颜色种类相等的情况
+        above = rec(0,0,0,0,balls)
+        return above/below

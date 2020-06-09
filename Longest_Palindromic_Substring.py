@@ -11,7 +11,7 @@ class Solution:
             for j in range(i,n):
                 if s[i] == s[j] and (j-i < 3 or dp[i+1][j-1]):
                     dp[i][j] = 1
-                    if res == "" or longest < j-i+1:
+                    if longest < j-i+1:
                         res = s[i:j+1]
                         longest = j-i+1
         return res

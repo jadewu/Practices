@@ -5,34 +5,34 @@ class MyStack:
         """
         Initialize your data structure here.
         """
-        self.q = collections.deque()
+        self.s = collections.deque()
 
     def push(self, x: int) -> None:
         """
         Push element x onto stack.
         """
-        s = self.q
-        s.append(x)
-        for _ in range(len(s)-1):
-            s.append(s.popleft())
+        q = self.q
+        q.append(x)
+        for _ in range(len(q)-1):
+            q.append(q.popleft())
             
     def pop(self) -> int:
         """
         Removes the element on top of the stack and returns that element.
         """
-        return self.q.popleft()
+        return self.s.popleft()
 
     def top(self) -> int:
         """
         Get the top element.
         """
-        return self.q[0]
+        return self.s[0]
 
     def empty(self) -> bool:
         """
         Returns whether the stack is empty.
         """
-        if not self.q:
+        if not self.s:
             return True
         
 

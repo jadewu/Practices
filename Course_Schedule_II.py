@@ -1,3 +1,29 @@
+# BFS，做法和Course Schedule里的一样，记录遍历的顺序，如果不存在cycle就输出结果
+class Solution:
+    def findOrder(self, numCourses: int, prerequisites: List[List[int]]) -> List[int]:
+        graph = collections.defaultdict(list)
+        pre = [0]*numCourses
+        res = []
+        for e in prerequisites:
+            graph[e[1]].append(e[0])
+            pre[e[0]] += 1
+        stack = []
+        for n in range(numCourses):
+            if pre[n] == 0:
+                stack.append(n)
+        while stack:
+            cur = stack.pop()
+            res.append(cur)
+            l = graph[cur]
+            for n in l:
+                pre[n] -= 1
+                if pre[n] == 0:
+                    stack.append(n)
+        if sum(pre) == 0:
+            return res
+        return []
+
+# DFS
 class Solution:
     def findOrder(self, numCourses: int, prerequisites: List[List[int]]) -> List[int]:
         graph = collections.defaultdict(list)

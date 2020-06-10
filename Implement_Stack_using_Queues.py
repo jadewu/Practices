@@ -11,7 +11,7 @@ class MyStack:
         """
         Push element x onto stack.
         """
-        q = self.q
+        q = self.s
         q.append(x)
         for _ in range(len(q)-1):
             q.append(q.popleft())

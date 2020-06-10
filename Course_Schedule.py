@@ -1,3 +1,26 @@
+# BFS, 先把所有点指向的点记在list里，记录是否需要prerequisites
+# 把不需要prerequisites的点放进stack（作为root）
+# graph[stack.pop()]得到将当前课作为prerequisite的所有课（下一层），把它们的prerequisites数量-1，之后如果数量为0，就加入stack（新的root）
+# 最后如果没有prerequisites了，就说明没有back的边，没有cycle
+class Solution:
+    def canFinish(self, numCourses: int, prerequisites: List[List[int]]) -> bool:
+        graph = collections.defaultdict(list)
+        pre = [0]*numCourses
+        for e in prerequisites:
+            graph[e[0]].append(e[1])
+            pre[e[1]] += 1
+        stack = []
+        for n in range(numCourses):
+            if pre[n] == 0:
+                stack.append(n)
+        while stack:
+            l = graph[stack.pop()]
+            for n in l:
+                pre[n] -= 1
+                if pre[n] == 0:
+                    stack.append(n)
+        return sum(pre) == 0
+
 # DFS 方法一
 class Solution:
     def canFinish(self, numCourses: int, prerequisites: List[List[int]]) -> bool:

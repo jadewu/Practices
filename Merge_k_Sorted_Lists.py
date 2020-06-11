@@ -3,6 +3,7 @@
 #     def __init__(self, val=0, next=None):
 #         self.val = val
 #         self.next = next
+# 两种解法的时间复杂度都是O(nklogk), nk = N，n是list的数量，k是list的长度，N是lists的大小
 # 用分治法，Divide and Conquer: Partition into 2 halves and merge 2
 class Solution:
     def mergeKLists(self, lists: List[ListNode]) -> ListNode:

@@ -2,17 +2,12 @@
 # Binary search is efficient in finding an element in sorted list
 class Solution:
     def findMin(self, nums: List[int]) -> int:
-        left = 0
-        right = len(nums)-1
-        
-        # binary search
-        while left < right:
-            mid = (left+right)//2
-            print(mid)
-            if nums[mid] < nums[right]:
-                # minimum is between left and mid
-                right -= 1
+        l, r = 0, len(nums)-1
+        while l < r:
+            mid = (l + r) // 2
+            if nums[mid] > nums[r]:
+                l = mid + 1
             else:
-                # minimum is between mid and right
-                left += 1
-        return nums[left]
+                r = mid
+        # nums.sort()
+        return nums[l]

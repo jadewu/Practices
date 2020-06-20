@@ -24,3 +24,15 @@ class Solution:
         return p
 
 # 直接hashmap记录list1的所有节点，O(n)
+class Solution:
+    def getIntersectionNode(self, headA: ListNode, headB: ListNode) -> ListNode:
+        d = {}
+        while headA:
+            if headA not in d:
+                d[headA] = 1
+            headA = headA.next
+        while headB:
+            if headB in d:
+                return headB
+            headB = headB.next
+        return None

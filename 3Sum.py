@@ -21,3 +21,26 @@ class Solution:
                     d[nums[j]] = 1
         res = map(list, res)
         return res
+
+# 写成two sum的展开，sort和set都是用来去重的，合并两个sets用|
+class Solution:
+    def threeSum(self, nums: List[int]) -> List[List[int]]:
+        def twosum(nums, t):
+            d = {}
+            res = set()
+            for n in nums:
+                if (t-n) in d:
+                    res.add((n, t-n, -t))
+                else:
+                    d[n] = 1
+            return res
+        
+        res = set()
+        nums.sort()
+        for i in range(len(nums)):
+            if i >= 1 and nums[i] == nums[i-1]:
+                continue
+            t = 0 - nums[i]
+            res = res | twosum(nums[i+1:], t)
+        res = map(list, res)
+        return res

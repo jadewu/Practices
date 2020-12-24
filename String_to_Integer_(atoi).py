@@ -17,3 +17,34 @@ class Solution:
             res = res*10 + ord(ls[i]) - ord('0')
             i += 1
         return max(-2**31, min(sign * res,2**31-1))
+
+# 有一点点不一样的思路
+class Solution:
+    def myAtoi(self, str: str) -> int:
+        flg = 0
+        res = ""
+        digits = ['0','1','2','3','4','5','6','7','8','9']
+        for i in str:
+            if flg == 0:
+                if (i in digits) or (i == "-") or (i == "+"):
+                    flg = 1
+                    res += i
+                elif i == " ":
+                    continue
+                else:
+                    return 0
+                # print(i)
+            else:
+                if i in digits:
+                    res += i
+                else:
+                    break
+        if res in ("+", "-", ""):
+            return 0
+        r = int(res)
+        if r < -2**31:
+            return -2**31
+        elif r > 2**31-1:
+            return 2**31-1
+        else:
+            return int(res)

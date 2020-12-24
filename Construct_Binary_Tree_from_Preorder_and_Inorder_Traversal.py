@@ -19,3 +19,14 @@ class Solution:
         root.left = self.buildTree(preorder[1:idx+1], inorder[:idx])
         root.right = self.buildTree(preorder[idx+1:], inorder[idx+1:])
         return root
+
+# 另一种写法
+class Solution:
+    def buildTree(self, preorder: List[int], inorder: List[int]) -> TreeNode:
+        if inorder:
+            pre = preorder.pop(0)
+            ind = inorder.index(pre)
+            root = TreeNode(inorder[ind])
+            root.left = self.buildTree(preorder, inorder[0:ind])
+            root.right = self.buildTree(preorder, inorder[ind+1:])
+            return root
